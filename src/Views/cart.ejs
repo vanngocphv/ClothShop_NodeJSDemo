@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/_head', {title: pageTitle}); %>
+  </head>
+
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+      <div class="jumper">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+      <%- include('./partials/_navbar', {active: pageActive}) %>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="page-heading" id="top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="inner-content">
+              <h2>Your Cart</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- ***** Main Area Starts ***** -->
+    <section class="section" id="cart">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="section-heading">
+              <h2>Your Cart's Items</h2>
+              <span>Checkout your purchase items</span>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row customTitle">
+          <div class="col-lg-3">
+            <h4>Image</h4>
+          </div>
+          <div class="col-lg-3">
+            <h4>Name</h4>
+          </div>
+          <div class="col-lg-3">
+            <h4>Quantity</h4>
+          </div>
+          <div class="col-lg-3">
+            <h4>Total</h4>
+          </div>
+        </div>
+        <br />
+        <!-- All item order -->
+        <div class="output-html"></div>
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-3">
+            <h4 id="total-amount-products">
+              Total Amount: $<span class="total-amount-products">500</span>
+            </h4>
+            <input type="text" id="total-amount" name="total-amount" hidden />
+          </div>
+          <div class="col-md-3">
+            <button
+              type="button"
+              class="btn btn-success checkout"
+              data-toggle="modal"
+              data-target="#checkinModal"
+            >
+              Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ***** Main Area Ends ***** -->
+
+    <!-- Checkin Popup Modal Form Start -->
+    <div
+      class="modal fade"
+      id="checkinModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="checkinModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="checkinModalLabel">
+              Order Information
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="order-name" class="col-form-label">Name:</label>
+                <input type="text" class="form-control" id="order-name" />
+                <span id="order-name-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="order-email" class="col-form-label">Email:</label>
+                <input type="text" class="form-control" id="order-email" />
+                <span id="order-email-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="order-message" class="col-form-label"
+                  >Message:</label
+                >
+                <textarea class="form-control" id="order-message"></textarea>
+                <span id="order-message-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="order-products" class="col-form-label"
+                  >Total products:</label
+                >
+                <textarea class="form-control" id="order-products" readonly>
+                </textarea>
+                <span id="order-products-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="order-amount" class="col-form-label"
+                  >Total amount:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="order-amount"
+                  readonly
+                />
+                <span id="order-amount-invalid" style="color: red"></span>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary submit-create-btn">
+              Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Checkin Popup Modal Form End -->
+
+    <!-- ***** Footer Start ***** -->
+    <footer><%- include('./partials/_footer') %></footer>
+
+    <%- include('./partials/_scripts'); %>
+    <!-- AJAX -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const outputHtml = document.querySelector(".output-html");
+      const totalAmount = document.querySelector(".total-amount-products");
+      const checkoutBtn = document.querySelector(".checkout");
+
+      let total = 0;
+
+      let products = JSON.parse(localStorage.getItem("products"));
+      if (typeof products === "undefined" || !products) {
+        outputHtml.innerHTML = "No Items There";
+        checkoutBtn.hidden = true;
+      } else {
+        checkoutBtn.hidden = false;
+        products.forEach(LoopArray);
+      }
+      localStorage.setItem("amount", total);
+      totalAmount.innerHTML = `${total}`;
+
+      function LoopArray(item) {
+        total += Number(item.total);
+        let outputLineByLine = "";
+        outputLineByLine += '<div class="row cart-item">';
+        outputLineByLine += '<div class="col-md-3">';
+        outputLineByLine +=
+          '<img class="cart-image" src="' + item.image + '" />';
+        outputLineByLine += "</div>";
+        outputLineByLine +=
+          '<div class="col-md-3"><span>' + item.name + "</span ></div>";
+        outputLineByLine +=
+          '<div class="col-md-3"><div class="quantity buttons_added">';
+        outputLineByLine +=
+          '<input type="button" value="-" class="minus" onclick="ChangeQuantity(' +
+          item.id +
+          ', 0)"><input type="number" step="1" min="1" max="" name="quantity" value="' +
+          item.quantity +
+          '" title="Qty" class="input-text qty text quantity-id-' +
+          item.id +
+          '" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus" onclick="ChangeQuantity(' +
+          item.id +
+          ', 1)">';
+        outputLineByLine +=
+          '</div></div><div class="col-md-3"><p id="totalPrice' +
+          item.id +
+          '">$' +
+          item.total +
+          ".00</p></div></div>";
+
+        outputHtml.innerHTML += outputLineByLine;
+      }
+
+      if (!products || typeof products === "undefined") {
+        document.querySelector(".checkout").hidden = true;
+      } else {
+        document.querySelector(".checkout").hidden = false;
+      }
+
+      function ChangeQuantity(id, action) {
+        const inputQuantity = document.querySelector(".quantity-id-" + id);
+        const totalPrice = document.querySelector("#totalPrice" + id);
+        let quantity = inputQuantity.value;
+        let total = 0;
+        let allProductsAmount = 0;
+        if (action == 0) {
+          //minus;
+          quantity = Number(quantity) - 1;
+        } else if (action == 1) {
+          //plus;
+          quantity = Number(quantity) + 1;
+        }
+
+        quantity = Number(quantity) > 50 ? 50 : quantity;
+        quantity = Number(quantity) < 1 ? 1 : quantity;
+
+        //change quantity and update in localstorage
+        products = products.map((product) => {
+          if (product.id == id) {
+            product.quantity = quantity;
+            product.total = total = Number(product.price) * Number(quantity);
+          }
+          allProductsAmount = Number(allProductsAmount) + Number(product.total);
+          return product;
+        });
+        localStorage.setItem("products", JSON.stringify(products));
+        localStorage.setItem("amount", total);
+        //change value in html
+        totalPrice.innerHTML = "$" + total + ".00";
+        inputQuantity.value = quantity;
+        totalAmount.innerHTML = allProductsAmount;
+      }
+
+      $("#checkinModal").on("show.bs.modal", function (event) {
+        let allproducts = localStorage.getItem("products");
+        let amount = localStorage.getItem("amount");
+        var button = $(event.relatedTarget); //get button element, just only for jquery
+        var modal = $(this);
+        //in this modal has been loaded, reload/set products and amount field
+
+        modal.find(".modal-body #order-products").val(allproducts);
+        modal.find(".modal-body #order-amount").val(amount);
+
+        $(".submit-create-btn").on("click", async function (event) {
+          event.preventDefault();
+
+          //get input valud
+          const name = modal.find(".modal-body #order-name").val();
+          const email = modal.find(".modal-body #order-email").val();
+          const message = modal.find(".modal-body #order-message").val();
+          const products = modal.find(".modal-body #order-products").val();
+          const amount = modal.find(".modal-body #order-amount").val();
+
+          let isValid = true;
+          let invalidFields = [];
+          if (name == "" || !name) {
+            invalidFields.push("name");
+            isValid = false;
+          }
+          if (email == "" || !email) {
+            invalidFields.push("email");
+            isValid = false;
+          }
+          if (message == "" || !message) {
+            invalidFields.push("message");
+            isValid = false;
+          }
+          if (products == "" || !products) {
+            invalidFields.push("products");
+            isValid = false;
+          }
+          if (amount == "" || !amount) {
+            invalidFields.push("amount");
+            isValid = false;
+          }
+
+          if (!isValid) {
+            invalidFields.forEach((field) => {
+              modal
+                .find(".modal-body #order-" + field + "-invalid")
+                .text("Please input this field");
+            });
+
+            return;
+          }
+
+          try {
+            const { data } = await axios.post("/api/orders/create", {
+              name: name,
+              email: email,
+              message: message,
+              products: products,
+              amount: amount,
+            });
+
+            toastr.success("Your Order has been posted", "Sending from server");
+            localStorage.removeItem("products");
+            localStorage.removeItem("amount");
+            outputHtml.innerHTML = "";
+            totalAmount.innerHTML = "0";
+            $("#checkinModal").modal("toggle");
+            document.querySelector(".checkout").hidden = true;
+            ClearBadgeCartCount();
+          } catch (err) {
+            toastr.success(
+              "Has error occurs, please try again",
+              "Sending from server"
+            );
+            console.log(err);
+          }
+        });
+      });
+
+      $("#checkinModal").on("hidden.bs.modal", function (event) {
+        var modal = $(this);
+        modal.find(".modal-body span").text("");
+      });
+    </script>
+  </body>
+</html>

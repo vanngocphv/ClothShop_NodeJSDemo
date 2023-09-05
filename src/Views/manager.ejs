@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/_head', {title: pageTitle}); %>
+  </head>
+
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+      <div class="jumper">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+      <%- include('./partials/_navbar', {active: pageActive}) %>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="page-manager" id="top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="inner-content">
+              <h2>Management Clothes</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- ***** Main Area Starts ***** -->
+    <section class="section" id="cart">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="section-heading">
+              <h2>Your Clothes data</h2>
+              <span>Create/Edit/Delete Cloth information</span>
+            </div>
+          </div>
+          <div class="col-lg-4"></div>
+          <div class="col-lg-2">
+            <div class="section-heading">
+              <h2>Add new</h2>
+              <ul>
+                <li>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#createModal"
+                  >
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row customTitle">
+          <div class="col-lg-3">
+            <h4>Image</h4>
+          </div>
+          <div class="col-lg-3">
+            <h4>Name</h4>
+          </div>
+          <div class="col-lg-2">
+            <h4>Type</h4>
+          </div>
+          <div class="col-lg-2">
+            <h4>Price</h4>
+          </div>
+          <div class="col-lg-2">
+            <h4>Action</h4>
+          </div>
+        </div>
+        <br />
+        <!-- All item order -->
+        <div id="output-html">
+          <% if (typeof products === "undefined") { %>
+          <div style="text-align: center">
+            <span>Not found Item in this page <%= page %></span>
+          </div>
+          <% } %> <% if (typeof products !== "undefined") { %> <% for (let i= 0;
+          i < products.length; i++) { %>
+          <div class="row cart-item">
+            <div class="col-md-3">
+              <img
+                id="cloth-<%= products[i].cloth_id %>-image"
+                class="cart-image"
+                src="<%= products[i].image %>"
+              />
+            </div>
+            <div class="col-md-3">
+              <span id="cloth-<%= products[i].cloth_id %>-name"
+                ><%= products[i].name %></span
+              >
+            </div>
+            <div class="col-md-2">
+              <span id="cloth-<%= products[i].cloth_id %>-type"
+                ><%= products[i].type %></span
+              >
+            </div>
+            <div class="col-md-2">
+              <span id="cloth-<%= products[i].cloth_id %>-price"
+                >$<%= products[i].price %></span
+              >
+            </div>
+            <div class="col-md-2">
+              <ul class="actionMenuInline">
+                <li>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#viewModal"
+                    data-id="<%= products[i].cloth_id %>"
+                    data-action="view"
+                  >
+                    <i class="fa fa-eye"></i>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-toggle="modal"
+                    data-target="#viewModal"
+                    data-id="<%= products[i].cloth_id %>"
+                    data-action="edit"
+                  >
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    class="btn btn-secondary delete-button"
+                    data-id="<%= products[i].cloth_id %>"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <% } %> <% } %>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <% if (typeof products !== "undefined") { %>
+            <div class="pagination">
+              <ul>
+                <li>
+                  <% if (page > 1) { %>
+                  <a href="?page=<%= Number(page) - 1 %>">&lt;</a>
+                  <% } %>
+                </li>
+                <li>
+                  <% if (maxPage > page) { %>
+                  <a href="?page=<%= Number(page) + 1 %>">></a>
+                  <% } %>
+                </li>
+              </ul>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ***** Main Area Ends ***** -->
+
+    <!-- Edit Modal Popup Start -->
+
+    <div
+      class="modal fade"
+      id="viewModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="viewModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewModalLabel">Detail Information</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="cloth-name" class="col-form-label">Name:</label>
+                <input type="text" class="form-control" id="cloth-name" />
+                <span id="cloth-name-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="cloth-image" class="col-form-label">Image:</label>
+                <br />
+                <img
+                  id="cloth-image"
+                  style="width: 200px; height: auto"
+                  src="no-image.jpg"
+                  alt=""
+                />
+                <input
+                  style="margin-top: 10px"
+                  type="file"
+                  accept="image/*"
+                  class="form-control"
+                  id="cloth-fileimage"
+                />
+                <span id="cloth-image-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="cloth-type" class="col-form-label">Type:</label>
+                <select id="cloth-type">
+                  <option value="1">Men</option>
+                  <option value="2">Women</option>
+                  <option value="3">Kid</option>
+                  <option value="4">Accessory</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cloth-price" class="col-form-label">Price:</label>
+                <input type="text" class="form-control" id="cloth-price" />
+                <span id="cloth-price-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="cloth-description" class="col-form-label"
+                  >Description:</label
+                >
+                <textarea
+                  class="form-control"
+                  id="cloth-description"
+                  readonly
+                ></textarea>
+                <span id="cloth-description-invalid" style="color: red"></span>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary submit-change-btn">
+              Save Change
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Edit Modal Popup End -->
+    <!-- Create Modal Popup Start -->
+    <div
+      class="modal fade"
+      id="createModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="createModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createModalLabel">
+              Detail Information
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="cloth-name" class="col-form-label">Name:</label>
+                <input type="text" class="form-control" id="cloth-name" />
+                <span id="cloth-name-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="cloth-image" class="col-form-label">Image:</label>
+                <br />
+                <input
+                  style="margin-top: 10px"
+                  type="file"
+                  accept="image/*"
+                  class="form-control"
+                  id="cloth-fileimage"
+                />
+                <span id="cloth-image-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="cloth-type" class="col-form-label">Type:</label>
+                <select id="cloth-type">
+                  <option value="1">Men</option>
+                  <option value="2">Women</option>
+                  <option value="3">Kid</option>
+                  <option value="4">Accessory</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cloth-price" class="col-form-label">Price:</label>
+                <input type="text" class="form-control" id="cloth-price" />
+                <span id="cloth-price-invalid" style="color: red"></span>
+              </div>
+              <div class="form-group">
+                <label for="cloth-description" class="col-form-label"
+                  >Description:</label
+                >
+                <textarea
+                  class="form-control"
+                  id="cloth-description"
+                ></textarea>
+                <span id="cloth-description-invalid" style="color: red"></span>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary submit-create-btn">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Modal Popup Ends -->
+
+    <!-- ***** Footer Start ***** -->
+    <footer><%- include('./partials/_footer') %></footer>
+
+    <%- include('./partials/_scripts'); %>
+    <!-- AJAX -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const pageParams = urlParams.get("page");
+      var datas = [];
+      onLoad(datas, pageParams);
+      // var currentData = datas[0].rows;
+
+      async function onLoad(datas, page) {
+        //get query page;
+        page = await handlePageValue(page);
+
+        await axios.get("/api/products" + "?page=" + page).then((item) => {
+          if (
+            typeof item.data.success !== "undefined" &&
+            item.data.success &&
+            item.data.status == 200
+          ) {
+            datas.push(item.data.data);
+          }
+        });
+      }
+
+      function handlePageValue(page) {
+        if (typeof page === "undefined" || !page) {
+          return 0;
+        }
+        if (Number(page) < 1) return 0;
+        if (Number(page) >= 1) return Number(page) - 1;
+      }
+
+      $("#viewModal").on("show.bs.modal", function (event) {
+        var button = $(event.relatedTarget); // Get value from button
+        var id = button.data("id"); // Extract info from data-* attributes
+
+        const currentData = datas[0].rows.find((data) => data.cloth_id == id); // get current data from server
+
+        var modal = $(this);
+        var action = button.data("action");
+
+        if (action == "view") {
+          modal
+            .find(".modal-title")
+            .text("Detail Information " + currentData.name); //title modal
+          modal.find(".modal-body #cloth-name").val(currentData.name); //name
+          modal.find(".modal-body #cloth-image").attr("src", currentData.image); //image
+          modal
+            .find(
+              ".modal-body #cloth-type option[value=" + currentData.type + "]"
+            )
+            .attr("selected", "selected"); //type
+          modal.find(".modal-body #cloth-type").attr("disabled", true); //type
+          modal.find(".modal-body #cloth-price").val(currentData.price); //price
+          modal
+            .find(".modal-body #cloth-description")
+            .val(currentData.description); //description
+          modal.find(".modal-body #cloth-fileimage").attr("hidden", true); //fileimage
+          modal.find(".modal-body input").attr("readonly", true); //all input field
+          modal.find(".modal-body textarea").attr("readonly", true); //all textarea
+          modal
+            .find(".modal-body input")
+            .css("background-color", "rgba(140, 140, 140, 0.2)"); //all textarea
+          modal
+            .find(".modal-body textarea")
+            .css("background-color", "rgba(140, 140, 140, 0.2)"); //all textarea
+
+          modal.find(".modal-footer .submit-change-btn").attr("hidden", true); //submit button
+        } else {
+          modal
+            .find(".modal-title")
+            .text("Detail Information " + currentData.name); //title modal
+          modal.find(".modal-body #cloth-name").val(currentData.name); //name
+          modal.find(".modal-body #cloth-image").attr("src", currentData.image); //image
+          modal
+            .find(
+              ".modal-body #cloth-type option[value=" + currentData.type + "]"
+            )
+            .attr("selected", "selected"); //type
+          modal.find(".modal-body #cloth-type").attr("disabled", false); //type
+          modal.find(".modal-body #cloth-price").val(currentData.price); //price
+          modal
+            .find(".modal-body #cloth-description")
+            .val(currentData.description); //description
+          modal.find(".modal-body #cloth-fileimage").attr("hidden", false); //fileimage
+          modal.find(".modal-body input").attr("readonly", false); //all input fields
+          modal.find(".modal-body textarea").attr("readonly", false); //all textarea fields
+          modal.find(".modal-footer .submit-change-btn").attr("hidden", false); //submit button
+        }
+
+        //add event
+        $(".submit-change-btn").on("click", async function (event) {
+          if (action == "view") {
+            return;
+          } else if (action == "edit") {
+            event.preventDefault();
+            const name = document.querySelector("#cloth-name").value;
+            const image = document.querySelector("#cloth-fileimage").files[0];
+
+            const type = document.querySelector("#cloth-type").value;
+            const price = document.querySelector("#cloth-price").value;
+            const desc = document.querySelector("#cloth-description").value;
+
+            //check valid value
+            let isValid = true;
+            let invalidFields = [];
+            if (name == "" || !name) {
+              invalidFields.push("name");
+              isValid = false;
+            }
+            //image check there
+
+            //if
+            if (type == "" || !type) {
+              invalidFields.push("type");
+              isValid = false;
+            }
+            if (price == "" || !price) {
+              invalidFields.push("price");
+              isValid = false;
+            }
+            if (desc == "" || !desc) {
+              invalidFields.push("desc");
+              isValid = false;
+            }
+
+            if (!isValid) {
+              invalidFields.forEach((field) => {
+                modal
+                  .find(".modal-body #cloth-" + field + "-invalid")
+                  .text("Please input this field");
+                modal
+                  .find(".modal-body #cloth-" + field)
+                  .css("background-color", "rgba(255, 161, 161, 0.3)");
+              });
+
+              return;
+            }
+
+            // send/update data into server with axios
+            try {
+              if (!image && typeof image === "undefined") {
+                const { data } = await axios.put("/api/products/" + id, {
+                  name: name,
+                  type: type,
+                  price: price,
+                  description: desc,
+                });
+
+                //reload new local data for datas[];
+                datas = [];
+                await onLoad(datas, pageParams);
+
+                reloadRowsItem(datas[0].rows, id);
+              }
+              //if cloth image has value, try send to upload as a new file
+              else if (image && typeof image !== "undefined") {
+                var formData = new FormData();
+                var imagefile = document.querySelector("#cloth-fileimage");
+                formData.append("image", imagefile.files[0]);
+                const { data } = await axios.post(
+                  "/api/upload/image",
+                  formData,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                );
+                var imageName = data.data[0].filename;
+
+                await axios.put("/api/products/" + id, {
+                  name: name,
+                  image: imageName,
+                  type: type,
+                  price: price,
+                  description: desc,
+                });
+
+                //reload new local data for datas[];
+                datas = [];
+                await onLoad(datas, pageParams);
+
+                reloadRowsItem(datas[0].rows, id);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        });
+      });
+
+      $("#createModal").on("show.bs.modal", function (event) {
+        var modal = $(this);
+        var currentElement = this;
+
+        $(".submit-create-btn").on("click", async function (event) {
+          event.preventDefault();
+          const name = modal.find(".modal-body #cloth-name").val(); //name
+          const image =
+            currentElement.querySelector("#cloth-fileimage").files[0]; //image
+
+          const type = modal.find(".modal-body #cloth-type").val(); //type
+          const price = modal.find(".modal-body #cloth-price").val(); //price
+          const desc = modal.find(".modal-body #cloth-description").val(); //description
+
+          //check valid value
+          let isValid = true;
+          let invalidFields = [];
+          if (name == "" || !name) {
+            invalidFields.push("name");
+            isValid = false;
+          }
+          if (image == "" || !image) {
+            invalidFields.push("image");
+            isValid = false;
+          }
+          if (type == "" || !type) {
+            invalidFields.push("type");
+            isValid = false;
+          }
+          if (price == "" || !price) {
+            invalidFields.push("price");
+            isValid = false;
+          }
+          if (desc == "" || !desc) {
+            invalidFields.push("description");
+            isValid = false;
+          }
+
+          if (!isValid) {
+            invalidFields.forEach((field) => {
+              modal
+                .find(".modal-body #cloth-" + field + "-invalid")
+                .text("Please input this field");
+              modal
+                .find(".modal-body #cloth-" + field)
+                .css("background-color", "rgb(255, 161, 161, 0.3)");
+            });
+
+            return;
+          }
+
+          try {
+            //try send data to post
+            var formData = new FormData();
+            formData.append("image", image);
+            const { data } = await axios.post("/api/upload/image", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            });
+            var imageName = data.data[0].filename;
+
+            await axios.post("/api/products/create", {
+              name: name,
+              image: imageName,
+              price: price,
+              type: type,
+              description: desc,
+            });
+
+            location.reload();
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      });
+
+      $("#viewModal").on("hidden.bs.modal", function (event) {
+        var modal = $(this);
+        modal.find(".modal-body span").text("");
+        modal
+          .find(".modal-body input")
+          .css("background-color", "rgb(255, 161, 161, 0.0)");
+        modal
+          .find(".modal-body textarea")
+          .css("background-color", "rgb(255, 161, 161, 0.0)");
+        modal.find(".modal-body #cloth-fileimage").val("");
+      });
+
+      $("#createModal").on("hidden.bs.modal", function (event) {
+        var modal = $(this);
+        modal.find(".modal-body span").text("");
+        modal.find(".modal-body input").css("background-color", "");
+        modal.find(".modal-body textarea").css("background-color", "");
+        modal.find(".modal-body #cloth-fileimage").val("");
+      });
+
+      $(".delete-button").on("click", async function (event) {
+        var button = $(event.target);
+        var id = button.data("id");
+        console.log(id);
+
+        try {
+          //try send data to post
+          const { data } = await axios.delete("/api/products/" + id);
+
+          location.reload();
+        } catch (err) {
+          console.log(err);
+        }
+      });
+
+      function reloadRowsItem(array, id) {
+        const item = array.find((i) => i.cloth_id == Number(id));
+        const clothId = "#cloth-" + id + "-";
+        const rowName = document.querySelector(clothId + "name");
+        const rowImage = document.querySelector(clothId + "image");
+        const rowType = document.querySelector(clothId + "type"); //hard code fix this sh!t
+        const rowPrice = document.querySelector(clothId + "price");
+
+        rowName.textContent = item.name;
+        rowImage.src = item.image;
+        rowType.textContent = item.type;
+        rowPrice.textContent = "$" + item.price;
+      }
+    </script>
+  </body>
+</html>

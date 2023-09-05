@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/_head', {title: pageTitle}) %>
+  </head>
+
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+      <div class="jumper">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+      <%- include('./partials/_navbar', {active: pageActive}) %>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="page-heading" id="top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="inner-content">
+              <h2>Check Our Products</h2>
+              <span> <%= pageTitle %> </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- ***** Products Area Starts ***** -->
+    <section class="section" id="products">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="section-heading">
+              <h2>Our Latest Products</h2>
+              <span>Check out all of our products.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <% if (typeof products !== "undefined") { %> <% for (let i = 0; i <
+          products.length; i++) { %>
+          <div class="col-lg-4">
+            <div class="item">
+              <div class="thumb">
+                <div class="hover-content">
+                  <ul>
+                    <li>
+                      <a href="/products/<%= products[i].cloth_id %>"
+                        ><i class="fa fa-eye"></i
+                      ></a>
+                    </li>
+                    <li>
+                      <a
+                        style="cursor: pointer"
+                        onclick="AddToCart('<%= products[i].cloth_id %>', '<%= products[i].image %>', '<%= products[i].name %>','<%= products[i].price %>')"
+                        ><i class="fa fa-shopping-cart"></i
+                      ></a>
+                    </li>
+                  </ul>
+                </div>
+                <img
+                  src="/<%= products[i].image %>"
+                  alt="<%= products[i].name %>"
+                />
+              </div>
+              <div class="down-content">
+                <h4><%= products[i].name %></h4>
+                <span>$<%= products[i].price %></span>
+              </div>
+            </div>
+          </div>
+          <% } %>
+          <div class="col-lg-12">
+            <div class="pagination">
+              <ul>
+                <% if (currentPage > 1) { %>
+                <li>
+                  <a href="?page=<%= currentPage-1 %>"><</a>
+                </li>
+                <% } %> <% for(let i = 1; i <= totalPage; i++) { %>
+                <li>
+                  <a href="?page=<%= i %>"><%= i %></a>
+                </li>
+                <% } %> <% if (currentPage < totalPage) { %>
+                <li>
+                  <a href="?page=<%= currentPage+1 %>">></a>
+                </li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+          <% } %> <% if (typeof products === "undefined") { %>
+
+          <div class="col-lg-12">
+            <div class="section-heading">
+              <h3>No Items</h3>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </section>
+    <!-- ***** Products Area Ends ***** -->
+
+    <!-- ***** Footer Start ***** -->
+    <footer><%- include('./partials/_footer') %></footer>
+
+    <!-- Script Area -->
+    <%- include('./partials/_scripts'); %>
+
+    <script src="/assets/js/customJS_CartAction.js"></script>
+  </body>
+</html>

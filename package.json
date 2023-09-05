@@ -1,0 +1,22 @@
+{
+  "name": "nodejs_proj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "mysql": "node mysql.js",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "formidable": "^3.5.1",
+    "mysql2": "^3.6.0",
+    "sequelize": "^6.32.1"
+  }
+}

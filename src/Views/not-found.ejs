@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/_head', {title: pageTitle}); %>
+  </head>
+
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+      <div class="jumper">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+      <%- include('./partials/_navbar', {active: pageActive}); %>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="page-heading about-page-heading" id="top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="inner-content">
+              <h2>Not Found</h2>
+              <span
+                >Are you mistake in searching?
+                <a href="/">Go back Home</a></span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- ***** Footer Start ***** -->
+    <footer><%- include('./partials/_footer') %></footer>
+
+    <!-- Script -->
+    <%- include('./partials/_scripts') %>
+  </body>
+</html>

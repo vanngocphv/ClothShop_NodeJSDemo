@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav class="main-nav">
+        <!-- ***** Logo Start ***** -->
+        <a href="/" class="logo">
+          <img src="/assets/images/logo.png" />
+        </a>
+        <!-- ***** Logo End ***** -->
+        <!-- ***** Menu Start ***** -->
+        <ul class="nav">
+          <li class="scroll-to-section">
+            <a
+              href="/#top"
+              class="<% if(active == 'Home') { %> <%='active'%> <% } %>"
+              >Home</a
+            >
+          </li>
+          <li class="submenu">
+            <a
+              href="/products"
+              class="<% if(active == 'Shopping') { %> <%='active'%> <% } %>"
+              >Shopping</a
+            >
+            <ul>
+              <li><a href="/products/men">Men's</a></li>
+              <li><a href="/products/women">Women's</a></li>
+              <li><a href="/products/kid">Kid's</a></li>
+              <li><a href="/products/accessory">Accessory's</a></li>
+            </ul>
+          </li>
+          <li class="submenu">
+            <a
+              href="javascript:;"
+              class="<% if(active == 'More') { %> <%='active'%> <% } %>"
+              >More</a
+            >
+            <ul>
+              <li><a href="/pages/about">About Us</a></li>
+              <li><a href="/pages/contact">Contact Us</a></li>
+            </ul>
+          </li>
+          <li class="scroll-to-section">
+            <a
+              href="/manager"
+              class="<% if(active == 'Manager') { %> <%='active'%> <% } %>"
+              >Manager</a
+            >
+          </li>
+          <li class="scroll-to-section">
+            <a
+              href="/orders"
+              class="<% if(active == 'Order') { %> <%='active'%> <% } %>"
+              >Orders</a
+            >
+          </li>
+
+          <li class="scroll-to-section">
+            <a
+              href="/cart"
+              class="cart <% if(active == 'Cart') { %> <%='active'%> <% } %>"
+            >
+              Cart
+              <span id="cart-badge" class="badge"></span>
+            </a>
+          </li>
+        </ul>
+        <a class="menu-trigger">
+          <span>Menu</span>
+        </a>
+        <!-- ***** Menu End ***** -->
+      </nav>
+    </div>
+  </div>
+</div>
