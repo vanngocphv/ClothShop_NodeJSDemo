@@ -240,6 +240,7 @@
         const totalPrice = document.querySelector("#totalPrice" + id);
         let quantity = inputQuantity.value;
         let total = 0;
+        let returnTotal = 0;
         let allProductsAmount = 0;
         if (action == 0) {
           //minus;
@@ -262,7 +263,7 @@
           return product;
         });
         localStorage.setItem("products", JSON.stringify(products));
-        localStorage.setItem("amount", total);
+        localStorage.setItem("amount", allProductsAmount);
         //change value in html
         totalPrice.innerHTML = "$" + total + ".00";
         inputQuantity.value = quantity;
