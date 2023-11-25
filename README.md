@@ -26,4 +26,4 @@ Date Created: 30/08/2023 (GMT +7) - 05/09/2023 (GMT +7)<br />
 - This project will let user can create, edit, delete your shop clothes or anything they want
 - Customer can view, order and check their order
 - Note: I really don't want to create login, I have no time for this (maybe I will update this feature if I have time again)
-- Check my gif folder for more information, [GIF](./Gif/)
+- Check my gif folder for more overview what the project do if you don't want to pull the project, [GIF](./Gif/)
